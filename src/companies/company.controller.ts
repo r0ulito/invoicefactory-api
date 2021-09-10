@@ -33,6 +33,12 @@ export class CompanyController {
         return this.companyService.findOne(+id);
     }
 
+    @Get(':id/invoices')
+    getInvoices(@Param('id') id: string) {
+        return this.companyService.invoices(+id);
+        return `this method should return all invoices for company #${id}`;
+    }
+
     @Patch(':id')
     update(
         @Param('id') id: string,

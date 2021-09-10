@@ -1,4 +1,3 @@
-import { All } from '@nestjs/common';
 import {
     Model,
     Table,
@@ -8,8 +7,8 @@ import {
     DataType,
     Default,
     HasMany,
-    AllowNull,
 } from 'sequelize-typescript';
+import { Required } from 'src/helpers/validators';
 import { Invoice } from '../../invoices/entities/invoice.entity';
 import { Job } from '../../jobs/entities/job.entity';
 
@@ -21,31 +20,32 @@ export class Company extends Model {
         type: DataType.BIGINT,
     })
     id: number;
-    @AllowNull(false)
+
+    @Required('name')
     @Column({
         type: DataType.STRING,
     })
     name: string;
 
-    @AllowNull(false)
+    @Required('address')
     @Column({
         type: DataType.STRING,
     })
     address: string;
 
-    @AllowNull(false)
+    @Required('zip_code')
     @Column({
         type: DataType.STRING,
     })
     zip_code: string;
 
-    @AllowNull(false)
+    @Required('city')
     @Column({
         type: DataType.STRING,
     })
     city: string;
 
-    @AllowNull(false)
+    @Required('country')
     @Default('france')
     @Column({
         type: DataType.STRING,

@@ -30,6 +30,11 @@ export class IndividualController {
         return this.individualService.findOne(+id);
     }
 
+    @Get(':id/invoices')
+    getInvoices(@Param('id') id: string) {
+        return this.individualService.invoices(+id);
+    }
+
     @Patch(':id')
     update(
         @Param('id') id: string,

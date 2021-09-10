@@ -1,51 +1,53 @@
 import { Injectable } from '@nestjs/common';
+import { Invoice } from 'src/invoices/entities/invoice.entity';
 import { CreateIndividualDto } from './dto/create-individual.dto';
 import { UpdateIndividualDto } from './dto/update-individual.dto';
 import { Individual } from './entities/individual.entity';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class IndividualService {
     create(createIndividualDto: CreateIndividualDto) {
-        return Individual.create(createIndividualDto)
-            .then((response) => response)
-            .catch((error) => error);
+        const individual = Individual.build(createIndividualDto);
+        return validateOrReject(individual, {
+            validationError: { target: false },
+        })
+            .then(() => individual.save())
+            .catch((errors) => errors);
     }
 
     findAll() {
         return Individual.findAll()
             .then((response) => response)
             .catch((error) => error);
-        return `This action returns all individual`;
     }
 
     findOne(id: number) {
-        return Individual.findAll({
-            where: {
-                id,
-            },
-        })
+        return Individual.findByPk(id)
             .then((response) => response)
             .catch((error) => error);
-        return `This action returns a #${id} individual`;
     }
 
     update(id: number, updateIndividualDto: UpdateIndividualDto) {
-        return Individual.update(updateIndividualDto, {
-            where: {
-                id,
-            },
+        const individual = Individual.build(updateIndividualDto);
+        return validateOrReject(individual, {
+            validationError: { target: false },
         })
-            .then((response) => response)
-            .catch((error) => error);
-        return `This action updates a #${id} individual`;
+            .then(() =>
+                Individual.update(updateIndividualDto, { where: { id } }),
+            )
+            .catch((errors) => errors);
     }
 
     remove(id: number) {
         return Individual.destroy({
-            where: {
-                id,
-            },
+            where: { id },
         });
-        return `This action removes a #${id} individual`;
+    }
+
+    invoices(id: number) {
+        return Individual.findByPk(id, {
+            include: Invoice,
+        });
     }
 }

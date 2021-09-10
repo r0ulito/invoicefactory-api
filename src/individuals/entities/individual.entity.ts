@@ -4,10 +4,14 @@ import {
     Column,
     DataType,
     Default,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
+    Validate,
 } from 'sequelize-typescript';
+import { Required } from 'src/helpers/validators';
+import { Invoice } from 'src/invoices/entities/invoice.entity';
 
 @Table
 export class Individual extends Model {
@@ -21,36 +25,37 @@ export class Individual extends Model {
     })
     gender: string;
 
-    @AllowNull(false)
+    @Required('first_name')
     @Column({
         type: DataType.STRING,
     })
     first_name: string;
 
-    @AllowNull(false)
+    @Required('last_name')
     @Column({
         type: DataType.STRING,
     })
     last_name: string;
 
-    @AllowNull(false)
+    @Required('address')
     @Column({
         type: DataType.STRING,
     })
     address: string;
 
-    @AllowNull(false)
+    @Required('zip_code')
     @Column({
         type: DataType.STRING,
     })
     zip_code: string;
 
-    @AllowNull(false)
+    @Required('city')
     @Column({
         type: DataType.STRING,
     })
     city: string;
 
+    @Required('country')
     @Default('france')
     @Column({
         type: DataType.STRING,
@@ -64,4 +69,7 @@ export class Individual extends Model {
     public set country(value: string) {
         this.setDataValue('country', value.toLowerCase());
     }
+
+    @HasMany(() => Invoice)
+    invoices: Invoice[];
 }
