@@ -56,7 +56,7 @@ function getFieldValue(field: string, instance: Model<any>) {
     },
 }))
 @Table({
-    /* validate: {
+    validate: {
         allowNullWorkedDaysIfJobIdIsNull(this: Invoice) {
             if (
                 this.getDataValue('job_id') !== undefined &&
@@ -86,7 +86,7 @@ function getFieldValue(field: string, instance: Model<any>) {
                 throw new Error('Company must be chosen if a job is selected');
             }
         },
-    }, */
+    },
 })
 export class Invoice extends Model {
     @PrimaryKey
