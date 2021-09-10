@@ -8,10 +8,8 @@ import {
 @ValidatorConstraint()
 export class IsRequiredIfConstraint implements ValidatorConstraintInterface {
     validate(value: any, args: ValidationArguments) {
-        console.log('related value is', value);
         const [relatedPropertyName] = args.constraints;
         const relatedValue = (args.object as any)[relatedPropertyName];
-        console.log(`job_id is ${relatedValue} and worked_days is ${value}`);
         return value !== undefined && relatedValue !== undefined;
     }
     defaultMessage(args: ValidationArguments) {
