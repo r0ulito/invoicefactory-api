@@ -1,10 +1,10 @@
 import {
     registerDecorator,
     ValidationArguments,
-    ValidationOptions,
     ValidatorConstraint,
     ValidatorConstraintInterface,
 } from 'class-validator';
+import { Model } from 'sequelize/types';
 
 @ValidatorConstraint()
 export class IsRequiredConstraint implements ValidatorConstraintInterface {
@@ -20,12 +20,12 @@ export class IsRequiredConstraint implements ValidatorConstraintInterface {
 /**
  * 
  * Makes the annotated field required
- * @param property name of the required property
+ *
  
  */
 
-export function Required(validationOptions?: ValidationOptions) {
-    return function (object, propertyName: string) {
+export function Required() {
+    return function (object: Model, propertyName: string) {
         registerDecorator({
             name: 'isRequired',
             target: object.constructor,

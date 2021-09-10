@@ -37,9 +37,9 @@ export class IsRequiredIfConstraint implements ValidatorConstraintInterface {
 }
 
 /**
- * Makes the annotated field required if param property has a value
+ * Makes the annotated field required if the `property` field has a value
  *
- * @param property the property which have to be present to make the annotated field required
+ * @param {string} property - the field which have to be set
  
  */
 

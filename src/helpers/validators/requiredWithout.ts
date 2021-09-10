@@ -15,9 +15,6 @@ export class IsRequiredWithoutConstraint
         relatedProperties.forEach((value) =>
             relatedValues.push((args.object as any)[value]),
         );
-
-        // si toutes les related sont pas set on valide
-        // sinon on valide pas
         relatedValues = relatedValues.filter(Boolean);
         return relatedValues.length == 0 && value !== undefined;
     }
@@ -31,6 +28,13 @@ export class IsRequiredWithoutConstraint
         )} are not set`;
     }
 }
+
+/**
+ * Makes the annotated field required if all the fields in the array are not set
+ *
+ * @param {Array} properties - An array of fields to check if they have a value
+ *
+ */
 
 export function RequiredWithout(properties: Array<string>) {
     return function (object, propertyName: string) {
