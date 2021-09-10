@@ -16,6 +16,13 @@ export class IsRequiredConstraint implements ValidatorConstraintInterface {
     }
 }
 
+/**
+ * 
+ * Makes the annotated field required
+ * @param property name of the required property
+ 
+ */
+
 export function Required(property: string) {
     return function (object, propertyName: string) {
         registerDecorator({
