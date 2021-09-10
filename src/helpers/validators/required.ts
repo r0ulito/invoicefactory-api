@@ -1,6 +1,7 @@
 import {
     registerDecorator,
     ValidationArguments,
+    ValidationOptions,
     ValidatorConstraint,
     ValidatorConstraintInterface,
 } from 'class-validator';
@@ -8,7 +9,7 @@ import {
 @ValidatorConstraint()
 export class IsRequiredConstraint implements ValidatorConstraintInterface {
     validate(value: any) {
-        return value !== null;
+        return value !== undefined;
     }
     defaultMessage(args: ValidationArguments) {
         const property = args.property.split('_').join('');
@@ -23,13 +24,13 @@ export class IsRequiredConstraint implements ValidatorConstraintInterface {
  
  */
 
-export function Required(property: string) {
+export function Required(validationOptions?: ValidationOptions) {
     return function (object, propertyName: string) {
         registerDecorator({
             name: 'isRequired',
             target: object.constructor,
             propertyName: propertyName,
-            constraints: [property],
+            constraints: [propertyName],
             validator: IsRequiredConstraint,
         });
     };

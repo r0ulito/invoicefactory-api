@@ -10,7 +10,11 @@ export class IsRequiredIfConstraint implements ValidatorConstraintInterface {
     validate(value: any, args: ValidationArguments) {
         const [relatedPropertyName] = args.constraints;
         const relatedValue = (args.object as any)[relatedPropertyName];
-        return value !== undefined && relatedValue !== undefined;
+
+        return (
+            relatedValue === undefined ||
+            (relatedValue !== undefined && value !== undefined)
+        );
     }
     defaultMessage(args: ValidationArguments) {
         let property = args.property;
