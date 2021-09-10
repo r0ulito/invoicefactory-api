@@ -77,11 +77,4 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "_moduleAliases": {
-    "@root": ".",
-    "@controllers": "src/controllers",
-    "@dto": "src/dto",
-    "@entities": "src/entities",
-    "@services": "src/services"
-  }
 }

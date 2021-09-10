@@ -22,17 +22,13 @@ import { Line } from 'src/lines/entities/line.entity';
 import { Company } from 'src/companies/entities/company.entity';
 import { Individual } from 'src/individuals/entities/individual.entity';
 import { Job } from 'src/jobs/entities/job.entity';
-import { Required } from 'src/helpers/validators';
+import { Required, RequiredIf } from 'src/helpers/validators';
 import { Op } from 'sequelize';
 
 // si job_id est set alors label est égal à FA-${currentYear}-${jobInvoiceCount.padstart(6, '0')}
 // E.G => FA-2021-000019 pour la 19ème facture de mission de l'année
 // sinon label est égal à FB-${currentYear}-${notCompanyInvoiceCount.padstart(6, '0')}
 // E.G => FB-2021-000006
-
-function getFieldValue(field: string, instance: Model<any>) {
-    return instance.getDataValue(field);
-}
 
 @Scopes(() => ({
     paid: {
@@ -57,16 +53,6 @@ function getFieldValue(field: string, instance: Model<any>) {
 }))
 @Table({
     validate: {
-        allowNullWorkedDaysIfJobIdIsNull(this: Invoice) {
-            if (
-                this.getDataValue('job_id') !== undefined &&
-                this.getDataValue('worked_days') === undefined
-            ) {
-                throw new Error(
-                    "Worked days can't be empty if a job is selected",
-                );
-            }
-        },
         allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull(this: Invoice) {
             if (
                 this.getDataValue('individual_id') !== undefined &&
@@ -123,12 +109,7 @@ export class Invoice extends Model {
     })
     label: string;
 
-    /**
-     *
-     *  Is validated through allowNullWorkDaysIfJobIdIsNull
-     *
-     **/
-
+    @RequiredIf('job_id')
     @Column({
         type: DataType.DECIMAL(3, 1),
     })
