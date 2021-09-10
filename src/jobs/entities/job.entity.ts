@@ -1,14 +1,13 @@
 import {
     AutoIncrement,
+    BelongsTo,
     Column,
+    DataType,
+    ForeignKey,
+    HasMany,
     Model,
     PrimaryKey,
     Table,
-    DataType,
-    ForeignKey,
-    BelongsTo,
-    AllowNull,
-    HasMany,
 } from 'sequelize-typescript';
 import { Required } from 'src/helpers/validators';
 import { Invoice } from 'src/invoices/entities/invoice.entity';
@@ -21,19 +20,19 @@ export class Job extends Model {
     @Column
     id: number;
 
-    @Required('label')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     label: string;
 
-    @Required('daily_rate')
+    @Required()
     @Column({
         type: DataType.DECIMAL(6, 2),
     })
     daily_rate: number;
 
-    @Required('company_id')
+    @Required()
     @ForeignKey(() => Company)
     @Column({
         type: DataType.BIGINT,

@@ -1,5 +1,4 @@
 import {
-    AllowNull,
     AutoIncrement,
     BelongsToMany,
     Column,
@@ -19,13 +18,13 @@ export class Line extends Model {
     @Column
     id: number;
 
-    @Required('label')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     label: string;
 
-    @Required('unit_price')
+    @Required()
     @Column({
         type: DataType.DECIMAL(6, 2),
     })

@@ -1,34 +1,24 @@
+import { Op } from 'sequelize';
 import {
     AutoIncrement,
-    Column,
-    Model,
-    PrimaryKey,
-    Table,
-    DataType,
-    ForeignKey,
-    Default,
+    BeforeValidate,
     BelongsTo,
     BelongsToMany,
+    Column,
+    DataType,
+    Default,
+    ForeignKey,
+    Model,
+    PrimaryKey,
     Scopes,
-    BeforeCreate,
-    BeforeSave,
-    AfterCreate,
-    AfterSave,
-    AllowNull,
-    BeforeValidate,
+    Table,
 } from 'sequelize-typescript';
-import { InvoiceLine } from 'src/entities/invoiceLine.entity';
-import { Line } from 'src/lines/entities/line.entity';
 import { Company } from 'src/companies/entities/company.entity';
+import { InvoiceLine } from 'src/entities/invoiceLine.entity';
+import { Required, RequiredIf, RequiredWithout } from 'src/helpers/validators';
 import { Individual } from 'src/individuals/entities/individual.entity';
 import { Job } from 'src/jobs/entities/job.entity';
-import { Required, RequiredIf } from 'src/helpers/validators';
-import { Op } from 'sequelize';
-
-// si job_id est set alors label est égal à FA-${currentYear}-${jobInvoiceCount.padstart(6, '0')}
-// E.G => FA-2021-000019 pour la 19ème facture de mission de l'année
-// sinon label est égal à FB-${currentYear}-${notCompanyInvoiceCount.padstart(6, '0')}
-// E.G => FB-2021-000006
+import { Line } from 'src/lines/entities/line.entity';
 
 @Scopes(() => ({
     paid: {
@@ -51,29 +41,7 @@ import { Op } from 'sequelize';
         },
     },
 }))
-@Table({
-    validate: {
-        allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull(this: Invoice) {
-            if (
-                this.getDataValue('individual_id') !== undefined &&
-                (this.getDataValue('job_id') !== undefined ||
-                    this.getDataValue('company_id') !== undefined)
-            ) {
-                throw new Error(
-                    'Require neither both job and company when individual type is set',
-                );
-            }
-        },
-        disallowNullCompanyIdIfJobIdIsNotNull(this: Invoice) {
-            if (
-                this.getDataValue('job_id') !== undefined &&
-                this.getDataValue('company_id') === undefined
-            ) {
-                throw new Error('Company must be chosen if a job is selected');
-            }
-        },
-    },
-})
+@Table
 export class Invoice extends Model {
     @PrimaryKey
     @AutoIncrement
@@ -103,7 +71,7 @@ export class Invoice extends Model {
         }
     }
 
-    @Required('label')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
@@ -115,7 +83,7 @@ export class Invoice extends Model {
     })
     worked_days: number;
 
-    @Required('type')
+    @Required()
     @Column({
         type: DataType.ENUM('job', 'client'),
     })
@@ -127,32 +95,15 @@ export class Invoice extends Model {
     })
     isPaid: boolean;
 
-    /**
-     *
-     *  Is validated through allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull && disallowNullCompanyIdIfJobIdIsNotNull
-     *
-     **/
-
+    @RequiredIf('worked_days')
     @ForeignKey(() => Job)
     @Column({
         type: DataType.INTEGER,
     })
-    get job_id(): string {
-        return this.getDataValue('job_id');
-    }
-
-    set job_id(v: string) {
-        this.setDataValue('job_id', v);
-    }
+    job_id: number;
 
     @BelongsTo(() => Job)
     job: Job;
-
-    /**
-     *
-     *  Is validated through allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull && disallowNullCompanyIdIfJobIdIsNotNull
-     *
-     **/
 
     @ForeignKey(() => Company)
     @Column({
@@ -167,6 +118,7 @@ export class Invoice extends Model {
      *  Is validated through allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull && disallowNullCompanyIdIfJobIdIsNotNull
      *
      **/
+    @RequiredWithout(['job_id', 'company_id'])
     @ForeignKey(() => Individual)
     @Column({
         type: DataType.INTEGER,

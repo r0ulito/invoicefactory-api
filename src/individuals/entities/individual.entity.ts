@@ -1,5 +1,4 @@
 import {
-    AllowNull,
     AutoIncrement,
     Column,
     DataType,
@@ -8,7 +7,6 @@ import {
     Model,
     PrimaryKey,
     Table,
-    Validate,
 } from 'sequelize-typescript';
 import { Required } from 'src/helpers/validators';
 import { Invoice } from 'src/invoices/entities/invoice.entity';
@@ -25,37 +23,37 @@ export class Individual extends Model {
     })
     gender: string;
 
-    @Required('first_name')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     first_name: string;
 
-    @Required('last_name')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     last_name: string;
 
-    @Required('address')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     address: string;
 
-    @Required('zip_code')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     zip_code: string;
 
-    @Required('city')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     city: string;
 
-    @Required('country')
+    @Required()
     @Default('france')
     @Column({
         type: DataType.STRING,

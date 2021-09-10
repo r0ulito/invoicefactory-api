@@ -21,31 +21,31 @@ export class Company extends Model {
     })
     id: number;
 
-    @Required('name')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     name: string;
 
-    @Required('address')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     address: string;
 
-    @Required('zip_code')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     zip_code: string;
 
-    @Required('city')
+    @Required()
     @Column({
         type: DataType.STRING,
     })
     city: string;
 
-    @Required('country')
+    @Required()
     @Default('france')
     @Column({
         type: DataType.STRING,
