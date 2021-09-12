@@ -22,7 +22,6 @@ export class IsRequiredWithoutConstraint
     defaultMessage(args: ValidationArguments) {
         const relatedProperties = args.constraints;
         const property = args.property;
-        console.log(args);
         return `${property} is required when ${relatedProperties.join(
             ' and ',
         )} are not set`;
@@ -30,9 +29,9 @@ export class IsRequiredWithoutConstraint
 }
 
 /**
- * Makes the annotated field required if all the fields in the array are not set
+ * Makes the annotated field required only when all of the other specified fields are empty or not present.
  *
- * @param {Array} properties - An array of fields to check if they have a value
+ * @param {Array} properties - An array of fields to check for presence
  *
  */
 
