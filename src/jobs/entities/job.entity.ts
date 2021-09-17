@@ -7,12 +7,18 @@ import {
     HasMany,
     Model,
     PrimaryKey,
+    Scopes,
     Table,
 } from 'sequelize-typescript';
 import { Required } from 'src/helpers/validators';
 import { Invoice } from 'src/invoices/entities/invoice.entity';
 import { Company } from '../../companies/entities/company.entity';
 
+@Scopes(() => ({
+    client: {
+        include: [Company],
+    },
+}))
 @Table
 export class Job extends Model {
     @PrimaryKey

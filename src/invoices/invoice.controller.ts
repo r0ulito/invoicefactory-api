@@ -10,6 +10,7 @@ import {
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
+import { get } from 'http';
 
 @Controller('invoices')
 export class InvoiceController {
@@ -38,6 +39,11 @@ export class InvoiceController {
     @Get(':id/lines')
     getLines(@Param('id') id: string) {
         return this.invoiceService.lines(+id);
+    }
+
+    @Get(':id/client')
+    getClient(@Param('id') id: string) {
+        return this.invoiceService.client(+id);
     }
 
     @Patch(':id')

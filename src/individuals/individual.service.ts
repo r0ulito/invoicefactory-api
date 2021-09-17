@@ -24,7 +24,9 @@ export class IndividualService {
 
     findOne(id: number) {
         return Individual.findByPk(id)
-            .then((response) => response)
+            .then((response) => ({
+                ...response['dataValues'],
+            }))
             .catch((error) => error);
     }
 

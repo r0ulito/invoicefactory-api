@@ -45,4 +45,9 @@ export class JobController {
         // return `This method should returns all invoices for job #${id}`;
         return this.jobService.invoices(+id);
     }
+
+    @Get(':id/client')
+    getClient(@Param('id') id: string) {
+        return this.jobService.client(+id);
+    }
 }

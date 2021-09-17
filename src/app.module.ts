@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ClientModule } from './clients/client.module';
 import { InvoiceModule } from './invoices/invoice.module';
 import { JobModule } from './jobs/job.module';
 import { CompanyModule } from './companies/company.module';
@@ -11,7 +10,6 @@ import { databaseModule } from './database/database.module';
 
 @Module({
     imports: [
-        ClientModule,
         InvoiceModule,
         JobModule,
         CompanyModule,

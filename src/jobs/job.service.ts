@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
+import { Company } from 'src/companies/entities/company.entity';
 import { Invoice } from 'src/invoices/entities/invoice.entity';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
@@ -52,6 +53,14 @@ export class JobService {
     invoices(id: number) {
         return Job.findByPk(id, {
             include: Invoice,
+        })
+            .then((response) => response)
+            .catch((error) => error);
+    }
+
+    client(id: number) {
+        return Job.findByPk(id, {
+            include: Company,
         })
             .then((response) => response)
             .catch((error) => error);

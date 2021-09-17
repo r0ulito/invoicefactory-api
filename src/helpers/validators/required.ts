@@ -9,7 +9,13 @@ import { Model } from 'sequelize/types';
 @ValidatorConstraint()
 export class IsRequiredConstraint implements ValidatorConstraintInterface {
     validate(value: any) {
-        return value !== undefined;
+        if (value !== '') {
+            return true;
+        }
+        if (value === undefined || value === '') {
+            return false;
+        }
+        // return value !== undefined || value !== '';
     }
     defaultMessage(args: ValidationArguments) {
         const property = args.property.split('_').join('');

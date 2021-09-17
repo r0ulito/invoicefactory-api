@@ -3,7 +3,7 @@ import { Invoice } from 'src/invoices/entities/invoice.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
-import { validate, validateOrReject } from 'class-validator';
+import { validateOrReject } from 'class-validator';
 
 @Injectable()
 export class CompanyService {
@@ -24,12 +24,17 @@ export class CompanyService {
 
     findOne(id: number) {
         return Company.findByPk(id)
-            .then((response) => response)
+            .then((response) => {
+                return {
+                    ...response['dataValues'],
+                };
+            })
             .catch((error) => error);
     }
 
     update(id: number, updateCompanyDto: UpdateCompanyDto) {
         const company = Company.build(updateCompanyDto);
+        console.log(company);
         return validateOrReject(company, {
             validationError: { target: false },
         })

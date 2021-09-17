@@ -43,7 +43,14 @@ export class Company extends Model {
     @Column({
         type: DataType.STRING,
     })
-    city: string;
+    get city(): string {
+        return `${this.getDataValue(
+            'city',
+        )[0].toUpperCase()}${this.getDataValue('city').substr(1)}`;
+    }
+    set city(value: string) {
+        this.setDataValue('city', value.toLowerCase());
+    }
 
     @Required()
     @Default('france')

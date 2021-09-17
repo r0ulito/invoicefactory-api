@@ -20,6 +20,8 @@ import { Individual } from 'src/individuals/entities/individual.entity';
 import { Job } from 'src/jobs/entities/job.entity';
 import { Line } from 'src/lines/entities/line.entity';
 
+//@TODO: change the field names to reflect individual invoices
+
 @Scopes(() => ({
     paid: {
         where: {
@@ -39,6 +41,15 @@ import { Line } from 'src/lines/entities/line.entity';
                 [Op.is]: null,
             },
         },
+    },
+    company: {
+        include: [Company, Job],
+    },
+    individual: {
+        include: [Individual],
+    },
+    client: {
+        include: [Company, Individual, Job],
     },
 }))
 @Table
@@ -113,11 +124,6 @@ export class Invoice extends Model {
     @BelongsTo(() => Company)
     company: Company;
 
-    /**
-     *
-     *  Is validated through allowNullCompanyIdAndJobIdIfIndividualIdIsNotNull && disallowNullCompanyIdIfJobIdIsNotNull
-     *
-     **/
     @RequiredWithout(['job_id', 'company_id'])
     @ForeignKey(() => Individual)
     @Column({

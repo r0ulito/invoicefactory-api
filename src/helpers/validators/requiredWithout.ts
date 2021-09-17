@@ -10,13 +10,17 @@ export class IsRequiredWithoutConstraint
     implements ValidatorConstraintInterface
 {
     validate(value: any, args: ValidationArguments) {
+        console.log('individual is: ', value);
+        console.log('args are: ', args.constraints);
         const relatedProperties = args.constraints;
         let relatedValues = [];
         relatedProperties.forEach((value) =>
             relatedValues.push((args.object as any)[value]),
         );
         relatedValues = relatedValues.filter(Boolean);
-        return relatedValues.length == 0 && value !== undefined;
+        return value === undefined
+            ? relatedValues.length > 0
+            : relatedValues.length == 0 && value !== undefined;
     }
 
     defaultMessage(args: ValidationArguments) {
